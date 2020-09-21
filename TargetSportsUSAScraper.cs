@@ -263,9 +263,12 @@ namespace AmmoScraper
                     product.HistoricLow = lowest.PricePerRound;
                     product.HistoricLowDate = lowest.DateTime;
 
-                    //update lowest record
+                    //update item with historic low property
                     DataStore.SaveProduct(product);
-                    search.InStockProducts.Add(product);
+
+                    if (search.InStockProducts.Exists(x => !(x.Id == product.Id))){
+                        search.InStockProducts.Add(product);
+                    }
                 }
             }
         }
@@ -309,7 +312,6 @@ namespace AmmoScraper
                             search.MatchedProducts.Remove(oldProduct);
                         }
                     }
-                    
                 }
 
             }
@@ -319,6 +321,7 @@ namespace AmmoScraper
             if (search.MatchedProducts.Count > 0 && search.MatchedProductsChanged)
             {
                 string message = "";
+                
                 foreach (var product in search.MatchedProducts)
                 {
                     message += product.ToString();
