@@ -10,8 +10,11 @@ namespace AmmoScraper
 {
     public class GmailService
     {
+        private string Username { get; set; }
         private SmtpClient SmtpClient { get; set; }
         public bool Configured { get; set; }
+
+
         public GmailService()
         {
             LoadConfig();
@@ -50,6 +53,7 @@ namespace AmmoScraper
                 return;
             }
             SmtpClient.Credentials = creds;
+            Username = creds.UserName;
             Configured = true;
         }
 
@@ -60,8 +64,8 @@ namespace AmmoScraper
             message += m;
 
             var mailMessage = new MailMessage(
-                "ring.miles@gmail.com",
-                "ring.miles@gmail.com",
+                from:Username,
+                to:Username,
                 subject,
                 message
                 );
